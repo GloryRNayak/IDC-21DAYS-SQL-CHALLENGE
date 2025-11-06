@@ -66,3 +66,27 @@ SELECT STAFF_NAME FROM STAFF ORDER BY STAFF_NAME;
  FROM SERVICES_WEEKLY
  ORDER BY PATIENTS_REFUSED DESC
  LIMIT 5;
+
+/* 
+==================================================
+DAY 4: LIMIT and OFFSET
+==================================================
+*/
+--   Practice Questions:
+
+-- 1. Display the first 5 patients from the patients table.
+SELECT NAME FROM PATIENTS LIMIT 5;
+-- 2. Show patients 11-20 using OFFSET.
+SELECT NAME FROM PATIENTS LIMIT 10 OFFSET 10;
+-- 3. Get the 10 most recent patient admissions based on arrival_date.
+SELECT NAME, ARRIVAL_DATE FROM PATIENTS ORDER BY ARRIVAL_DATE DESC LIMIT 10;
+
+-- Daily Challenge:
+
+-- **Question:** Find the 3rd to 7th highest patient satisfaction scores from the patients table, 
+-- showing patient_id, name, service, and satisfaction. Display only these 5 records.
+SELECT PATIENT_ID, NAME, SERVICE, SATISFACTION 
+FROM PATIENTS
+ORDER BY SATISFACTION DESC
+LIMIT 5
+OFFSET 2;
