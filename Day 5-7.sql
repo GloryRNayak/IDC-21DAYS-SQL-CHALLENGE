@@ -28,3 +28,27 @@ SELECT
     SUM(patients_refused) AS patients_refused,
     ROUND(AVG(patient_satisfaction), 2) AS avg_patient_satisfaction
 FROM services_weekly;
+
+/* 
+==================================================
+ DAY 6: GROUP BY Clause
+==================================================
+*/
+
+-- Practice Questions:
+
+-- 1. Count the number of patients by each service.
+SELECT SERVICE, COUNT(*) AS TOTAL_PATIENTS FROM PATIENTS GROUP BY SERVICE;
+-- 2. Calculate the average age of patients grouped by service.
+SELECT SERVICE, ROUND(AVG(AGE), 2) AS AVG_AGE FROM PATIENTS GROUP BY SERVICE;
+-- 3. Find the total number of staff members per role.
+SELECT ROLE, COUNT(*) TOTAL_STAFF FROM STAFF GROUP BY ROLE;
+
+-- ### Daily Challenge:
+-- **Question:** For each hospital service, calculate the total number of patients admitted, total patients refused, 
+-- and the admission rate (percentage of requests that were admitted). Order by admission rate descending.
+SELECT SERVICE, 
+	SUM(PATIENTS_ADMITTED) AS TOTAL_PATIENTS_ADM, 
+	SUM(PATIENTS_REFUSED) AS TOTAL_REFUSED,
+    ROUND((SUM(PATIENTS_ADMITTED)/SUM(PATIENTS_REQUEST) * 100),2) AS ADMISSION_RATE
+    FROM SERVICES_WEEKLY GROUP BY SERVICE ORDER BY ADMISSION_RATE DESC;
