@@ -52,3 +52,44 @@ SELECT SERVICE,
 	SUM(PATIENTS_REFUSED) AS TOTAL_REFUSED,
     ROUND((SUM(PATIENTS_ADMITTED)/SUM(PATIENTS_REQUEST) * 100),2) AS ADMISSION_RATE
     FROM SERVICES_WEEKLY GROUP BY SERVICE ORDER BY ADMISSION_RATE DESC;
+
+/* 
+==================================================
+ DAY 7: HAVING Clause
+==================================================
+*/
+
+-- Practice Questions:
+-- 1. Find services that have admitted more than 500 patients in total.
+SELECT 
+	SERVICE, SUM(PATIENTS_ADMITTED) AS TOTAL_ADMITTED 
+FROM SERVICES_WEEKLY 
+GROUP BY SERVICE 
+HAVING SUM(PATIENTS_ADMITTED) > 500;
+-- 2. Show services where average patient satisfaction is below 75.
+SELECT 
+	SERVICE, AVG(PATIENT_SATISFACTION) AS AVG_SATISFACTION 
+FROM SERVICES_WEEKLY 
+GROUP BY SERVICE 
+HAVING AVG(PATIENT_SATISFACTION) < 75;
+-- 3. List weeks where total staff presence across all services was less than 50.
+SELECT 
+    week, service, SUM(present) AS total_staff_presence
+FROM staff_schedule
+GROUP BY week, service
+HAVING SUM(present) < 50;
+
+
+-- Daily Challenge:
+
+-- **Question:** Identify services that refused more than 100 patients in total and had an average patient satisfaction below 80. 
+-- Show service name, total refused, and average satisfaction.
+SELECT 
+	SERVICE, 
+    SUM(PATIENTS_REFUSED) AS TOTAL_REFUSED, 
+    ROUND(AVG(PATIENT_SATISFACTION),2) AS AVG_SATISFACTION
+FROM SERVICES_WEEKLY
+GROUP BY SERVICE
+HAVING SUM(PATIENTS_REFUSED) > 100 AND AVG(PATIENT_SATISFACTION) < 80;
+
+
