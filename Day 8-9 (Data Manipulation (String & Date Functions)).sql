@@ -1,4 +1,10 @@
- ### Practice Questions:
+/* 
+==================================================
+ DAY 8: String Functions - Topics:UPPER, LOWER, LENGTH, CONCAT, SUBSTRING
+==================================================
+*/
+
+-- Practice Questions:
 
 -- 1. Convert all patient names to uppercase.
 SELECT 
@@ -28,8 +34,12 @@ FROM STAFF;
 FROM PATIENTS
 WHERE length(NAME) > 10;
 
-
-### Practice Questions:
+/* 
+==================================================
+ DAY 9:Date Functions
+==================================================
+*/
+-- Practice Questions:
 
 -- 1. Extract the year from all patient arrival dates.
 SELECT YEAR(ARRIVAL_DATE) AS YEAR FROM PATIENTS;
