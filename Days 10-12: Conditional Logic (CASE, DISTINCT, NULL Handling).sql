@@ -70,3 +70,34 @@ WHERE event IS NOT NULL
   AND event <> 'none'
 GROUP BY service, event
 ORDER BY event_count DESC;
+
+/* 
+==================================================
+ DAY 12:  NULL Values and IS NULL/IS NOT NULL
+==================================================
+*/
+## Practice Questions:
+
+-- 1. Find all weeks in services_weekly where no special event occurred.
+SELECT WEEK FROM services_weekly WHERE EVENT IS NULL;
+-- 2. Count how many records have null or empty event values.
+SELECT COUNT(*) FROM SERVICES_WEEKLY WHERE EVENT IS NULL;
+-- 3. List all services that had at least one week with a special event.
+SELECT SERVICE, EVENT FROM SERVICES_WEEKLY WHERE EVENT IS NOT NULL AND EVENT <> "NONE";
+
+## Daily Challenge:
+-- **Question:** Analyze the event impact by comparing weeks with events vs weeks without events. Show: event 
+-- status ('With Event' or 'No Event'), count of weeks, average patient satisfaction, and average staff morale. 
+-- Order by average patient satisfaction descending.
+SELECT 
+    CASE 
+        WHEN event IS NOT NULL AND LOWER(event) <> 'none' THEN 'With Event'
+        ELSE 'No Event'
+    END AS event_status,
+    COUNT(*) AS total_weeks,
+    ROUND(AVG(patient_satisfaction),2) AS avg_satisfaction,
+    ROUND(AVG(staff_morale),2) AS avg_morale
+FROM services_weekly
+GROUP BY event_status
+ORDER BY avg_satisfaction DESC;
+
