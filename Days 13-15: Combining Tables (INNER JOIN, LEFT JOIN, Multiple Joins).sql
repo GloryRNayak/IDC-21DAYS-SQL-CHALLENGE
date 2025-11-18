@@ -22,9 +22,6 @@ FROM PATIENTS P
 JOIN STAFF S
 ON P.SERVICE = S.SERVICE;
 
-
-
-
 -- ### Daily Challenge:
 
 -- **Question:** Create a comprehensive report showing patient_id, patient name, age, service, and the total number of staff members 
@@ -43,3 +40,60 @@ GROUP BY p.patient_id, p.name, p.age, p.service
 HAVING COUNT(s.staff_id) > 5
 ORDER BY  total_staff DESC, patient_name;
 
+
+/* 
+==================================================
+ DAY 14:  LEFT AND RIGHT JOIN
+==================================================
+*/
+--### Practice Questions:
+
+-- 1. Show all staff members and their schedule information (including those with no schedule entries).
+SELECT S.STAFF_NAME, SS.ROLE, SS.SERVICE, SS.PRESENT 
+FROM STAFF S
+LEFT JOIN STAFF_SCHEDULE SS
+ON S.STAFF_ID = SS.STAFF_ID;
+-- 2. List all services from services_weekly and their corresponding staff (show services even if no staff assigned).
+SELECT 
+    SW.SERVICE,
+    S.STAFF_NAME
+FROM SERVICES_WEEKLY SW
+LEFT JOIN STAFF_SCHEDULE SS
+    ON SW.SERVICE = SS.SERVICE
+LEFT JOIN STAFF S
+    ON SS.STAFF_ID = S.STAFF_ID;
+-- 3. Display all patients and their service's weekly statistics (if available).
+SELECT p.name AS patient_name,
+    p.service,
+    sw.week,
+    sw.patients_request,
+    sw.patients_admitted,
+    sw.patients_refused,
+    sw.patient_satisfaction,
+    sw.staff_morale,
+    sw.event
+FROM patients p
+LEFT JOIN services_weekly sw
+ON p.service = sw.service;
+
+-- ### Daily Challenge:
+
+-- **Question:** Create a staff utilisation report showing all staff members (staff_id, staff_name, role, service) 
+-- and the count of weeks they were present (from staff_schedule). Include staff members even if they have no schedule records. 
+-- Order by weeks present descending.
+SELECT 
+    S.STAFF_ID,
+    S.STAFF_NAME,
+    COALESCE(SS.ROLE, 'N/A') AS ROLE,
+    COALESCE(SS.SERVICE, 'N/A') AS SERVICE,
+    COUNT(CASE WHEN SS.PRESENT = 'Yes' THEN 1 END) AS WEEKS_PRESENT
+FROM STAFF S
+LEFT JOIN STAFF_SCHEDULE SS 
+    ON S.STAFF_ID = SS.STAFF_ID
+GROUP BY 
+    S.STAFF_ID,
+    S.STAFF_NAME,
+    SS.ROLE,
+    SS.SERVICE
+ORDER BY 
+    WEEKS_PRESENT DESC;
