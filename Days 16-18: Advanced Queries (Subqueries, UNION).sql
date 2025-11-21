@@ -1,3 +1,9 @@
+/* 
+==================================================
+ DAY 16:  Subqueries (WHERE clause)
+==================================================
+*/
+
 ### Practice Questions:
 
 -- 1. Find patients who are in services with above-average staff count.
