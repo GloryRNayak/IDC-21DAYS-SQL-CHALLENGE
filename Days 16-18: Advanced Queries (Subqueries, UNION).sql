@@ -33,3 +33,62 @@ WHERE service IN (
             SELECT AVG(patient_satisfaction) FROM services_weekly
         )
 );
+
+
+/* 
+==================================================
+ DAY 17:  Subqueries (SELECT and FROM clause)
+==================================================
+*/
+
+### Daily Challenge:
+
+-- **Question:** Create a report showing each service with: service name, total patients admitted,
+--  the difference between their total admissions and the average admissions across all services, and a rank indicator
+--  ('Above Average', 'Average', 'Below Average'). Order by total patients admitted descending.
+SELECT 
+    s.service,
+    s.total_admitted,
+    s.total_admitted - (SELECT 
+            AVG(x.service_total)
+        FROM
+            (SELECT 
+                SUM(patients_admitted) AS service_total
+            FROM
+                services_weekly
+            GROUP BY service) AS x) AS diff_from_avg,
+    CASE
+        WHEN
+            s.total_admitted > (SELECT 
+                    AVG(x.service_total)
+                FROM
+                    (SELECT 
+                        SUM(patients_admitted) AS service_total
+                    FROM
+                        services_weekly
+                    GROUP BY service) AS x)
+        THEN
+            'Above Average'
+        WHEN
+            s.total_admitted = (SELECT 
+                    AVG(x.service_total)
+                FROM
+                    (SELECT 
+                        SUM(patients_admitted) AS service_total
+                    FROM
+                        services_weekly
+                    GROUP BY service) AS x)
+        THEN
+            'Average'
+        ELSE 'Below Average'
+    END AS ranking
+FROM
+    (SELECT 
+        service, SUM(patients_admitted) AS total_admitted
+    FROM
+        services_weekly
+    GROUP BY service) AS s
+ORDER BY total_admitted DESC;
+
+
+
