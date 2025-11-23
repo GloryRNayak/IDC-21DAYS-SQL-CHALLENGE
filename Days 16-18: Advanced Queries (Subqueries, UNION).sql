@@ -90,5 +90,48 @@ FROM
     GROUP BY service) AS s
 ORDER BY total_admitted DESC;
 
+/* 
+==================================================
+ DAY 18: UNION and UNION ALL
+==================================================
+*/
+### Practice Questions:
+-- 1. Combine patient names and staff names into a single list.
+SELECT NAME AS PATIENT_NAMES 
+FROM PATIENTS
+UNION 
+SELECT STAFF_NAME
+FROM STAFF;
+
+-- 2. Create a union of high satisfaction patients (>90) and low satisfaction patients (<50).
+SELECT NAME AS PATIENTS, SATISFACTION, 'HIGH SATISFACTION' AS CATEGORY
+FROM PATIENTS
+WHERE SATISFACTION > 90
+UNION 
+SELECT NAME AS PATIENTS, SATISFACTION, 'LOW SATISFACTION' AS CATEGORY
+FROM PATIENTS
+WHERE SATISFACTION < 50
+ORDER BY SATISFACTION;
+
+-- 3. List all unique names from both patients and staff tables.
+SELECT DISTINCT NAME AS PATIENTS, 'PATIENTS' AS IDENTITY
+FROM PATIENTS
+UNION ALL
+SELECT DISTINCT STAFF_NAME, 'STAFF' AS IDENTITY
+FROM STAFF;
+
+-- DAILY CHALLENGE
+ -- Question: Create a comprehensive personnel and patient list showing: identifier (patient_id or staff_id), full name,
+--  type ('Patient' or 'Staff'), and associated service. Include only those in 'surgery' or 'emergency' services. Order by type, 
+--  then service, then name.
+SELECT PATIENT_ID AS IDENTIFIER, NAME AS FULL_NAME, 'PATIENT' AS TYPE, SERVICE
+FROM PATIENTS
+WHERE SERVICE IN ('SURGERY', 'EMERGENCY')
+UNION ALL
+SELECT STAFF_ID AS IDENTIFIER, STAFF_NAME AS FULL_NAME, 'STAFF' AS TYPE, SERVICE
+FROM STAFF
+WHERE SERVICE IN ('SURGERY', 'EMERGENCY')
+ORDER BY TYPE, SERVICE, FULL_NAME; 
+
 
 
